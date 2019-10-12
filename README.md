@@ -1,3 +1,10 @@
+## Rudolf Steiner Middle School Robotics
+
+Welcome, Fighting Gnomes!  This is the 2019 team repository for the SkyStone game.  This was forked directly from the FTC repository.
+
+Using Git allows us to pull updates directly from the FTC repository while also working on the coding from different machines.
+
+
 ## NOTICE
 
 This repository contains the public FTC SDK for the SKYSTONE (2019-2020) competition season.  
