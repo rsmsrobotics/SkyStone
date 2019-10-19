@@ -163,6 +163,29 @@ public class HardwareBot
         this.right_back_drive.setPower(wheelSpeeds[3] * this.MECHANUM_DRIVE_SPEED);
     }
 
+    /** Mechanism Control:  intakeControl
+     * This is for the intake control in the front of the robot.
+     *
+     * @param direction -- positive for in and negative for out, based on rear triggers
+     */
+    public void intakeControl(double direction)
+    {
+
+    }
+
+    /** Mechanism Control:  armControl
+     * This is for the arm and the lift control.
+     *
+     * @param rotateRequest
+     * @param leftRequest
+     * @param openClaw
+     * @param closeClaw
+     */
+    public void armControl(double rotateRequest, double leftRequest, boolean openClaw, boolean closeClaw)
+    {
+
+    }
+
     /** Commenting this temporarily so that we can have zero errors.  We will need to add this back into it
      * when the robot is working...
      *
