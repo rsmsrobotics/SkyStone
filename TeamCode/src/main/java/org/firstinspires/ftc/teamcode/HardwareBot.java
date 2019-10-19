@@ -166,9 +166,9 @@ public class HardwareBot
     /** Mechanism Control:  intakeControl
      * This is for the intake control in the front of the robot.
      *
-     * @param direction -- positive for in and negative for out, based on rear triggers
+     * @param direction -- negative for in and positive for out, based on rear triggers
      */
-    public void intakeControl(double direction)
+    public void intakeControl(int direction)
     {
 
     }
@@ -177,11 +177,10 @@ public class HardwareBot
      * This is for the arm and the lift control.
      *
      * @param rotateRequest
-     * @param leftRequest
-     * @param openClaw
-     * @param closeClaw
+     * @param liftRequest
+     * @param clawMotion negative to close claw, positive to open claw, zero for nothing
      */
-    public void armControl(double rotateRequest, double leftRequest, boolean openClaw, boolean closeClaw)
+    public void armControl(double rotateRequest, double liftRequest, int clawMotion)
     {
 
     }

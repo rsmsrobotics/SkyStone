@@ -57,37 +57,31 @@ public class FightingGnomes_OpMode extends LinearOpMode {
             // This code uses the MecanumDrive method for controlling the robot
             this.robot.mecanumDrive(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
 
-            // The second block of code is for the Operator controller
-            // The operator uses gamepad2
-            // Left_Bumper brings the arm in and Right Bumper sends it out
-            // Left Stick is for the lift_drive (up brings it up) and (down brings it down).
-
-            // Lift
-            // 20191005 This is the slide drive for lifting the arm up and down
-            double lift_amount;
-            lift_amount = this.gamepad2.left_stick_y;
-
-            // Arm Rotation
-            // 20191005 This is the rotation of the arm to control; the servo is attached to the
-            //  sliding lift arm
-            // this.gamepad2.right_stick_y controls the arm rotation
-            double arm_amount;
-            arm_amount = this.gamepad2.right_stick_y;
-
-            // BELOW IS ALL OUT OF DATE FROM 2018
-
-            // Arm Motion in and Out
-            // First we need to figure out if the operator wants the arm to go in or out or nothing
-            int arm_motion = 0;
+            // Operator Controller
+            //  INTAKE
+            //
+            // start by setting no button pushed
+            int intake_direction = 0;
             if (this.gamepad2.right_bumper) {
-                arm_motion = 1;
+                intake_direction = 1;
             }
             else if (this.gamepad2.left_bumper) {
-                arm_motion = -1;
+                intake_direction = -1;
             }
+            this.robot.intakeControl(intake_direction);
 
-            // Claw Motion in and Out
-            // First we need to figure out if the operator wants the claw to go in or out or nothing
+            // The next block of code is for the Operator controller for the arm
+            // The operator uses gamepad2
+            // Left Stick is for rotation
+            // Right stick is for elevation
+            // Button A is for open claw
+            // Button B is for closed claw
+
+            double arm_lift_amount;
+            arm_lift_amount = this.gamepad2.right_stick_y;
+            double arm_rotate_amount;
+            arm_rotate_amount = this.gamepad2.left_stick_x;
+
             int claw_motion = 0;
             if (this.gamepad2.a) {
                 claw_motion = 1;
@@ -95,8 +89,9 @@ public class FightingGnomes_OpMode extends LinearOpMode {
             else if (this.gamepad2.b) {
                 claw_motion = -1;
             }
+
             // Actually send the operator to the control.
-            this.robot.mechanismControl(lift_amount, arm_amount, arm_motion, claw_motion);
+            this.robot.armControl(arm_rotate_amount, arm_lift_amount, claw_motion);
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
