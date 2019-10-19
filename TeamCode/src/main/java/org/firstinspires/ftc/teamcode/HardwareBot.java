@@ -20,10 +20,13 @@ import com.qualcomm.robotcore.util.Range;
  * Motor channel:  Right front drive motor:  "right_front_drive"
  * Motor channel:  Left rear drive motor: "left_back_drive"
  * Motor channel:  Right rear drive motor: "right_back_drive"
- * Motor channel:  Manipulator drive motor:  "arm_drive"
- * Motor channel:  Lift drive motor: "lift_drive"
- * Servo channel:  Servo to push arm in and out: "arm_servo"
- * Servo channel:  Servo to open and close claw: "claw_servo"
+ * Motor channel:  Block intake motor:  "block_intake_drive"
+ * Motor channel:  Arm rotate drive motor:  "arm_rotate_drive"
+ * Motor channel:  Arm lift motor: "arm_lift_drive"
+ *
+ * Servo channel:  Intake left servo: "intake_left_servo"
+ * Servo channel:  Intake right servo: "intake_right_servo"
+ * Servo channel:  Claw servo: "claw_servo"
  */
 public class HardwareBot
 {
@@ -32,27 +35,39 @@ public class HardwareBot
     public DcMotor left_back_drive = null;
     public DcMotor right_front_drive = null;
     public DcMotor right_back_drive = null;
-    public DcMotor lift_drive = null;
-    public DcMotor arm_drive = null;
-    public Servo arm_servo = null;
+    public DcMotor block_intake_drive = null;
+    public DcMotor arm_rotate_drive = null;
+    public DcMotor arm_lift_drive = null;
+    public Servo intake_left_servo = null;
+    public Servo intake_right_servo = null;
     public Servo claw_servo = null;
 
     public static final double FORWARD_SPEED = 0.6;
     public static final double TURN_SPEED    = 0.5;
     public static final double UP_SPEED = 0.5;
     public static final double DOWN_SPEED = 0.5;
-    public static final double MID_SERVO = 0.5;
 
     public static final double MECHANUM_DRIVE_SPEED = 0.5;
-    public static final double ARM_DRIVE_MOTOR_SPEED = 0.33;
-    public static final double LIFT_DRIVE_MOTOR_SPEED = 0.75 ;
+    public static final double INTAKE_DRIVE_SPEED = 0.33;
+    public static final double ARM_ROTATE_SPEED = 0.33;
+    public static final double ARM_LIFT_SPEED = 0.33;
 
-    public final static double ARM_HOME = 0.2;
-    public final static double ARM_MIN_RANGE = 0.20;
-    public final static double ARM_MAX_RANGE = 0.90;
+    public final static double ARM_ROTATE_HOME = 0.2;
+    public final static double ARM_ROTATE_MIN_RANGE = 0.20;
+    public final static double ARM_ROTATE_MAX_RANGE = 0.90;
 
-    public final static double ARM_SERVO_MOTION_DELTA = 0.2;
-    public final static double ARM_CONTROLLER_SENSITIVITY = 0.1;
+    public final static double ARM_LIFT_HOME = 0.2;
+    public final static double ARM_LIFT_MIN_RANGE = 0.20;
+    public final static double ARM_LIFT_MAX_RANGE = 0.90;
+
+    public final static double INTAKE_SERVOS_MOTION_DELTA = 0.1;
+    /** The servos for the intake will be facing each other and for the same direction of intake,
+     * they need to spin in a different direction.
+     */
+    public static final double INTAKE_INITIAL_SERVO = 0.0;
+    public final static double INTAKE_LEFT_SERVO_DIRECTION_MULTIPLIER = 1.0;
+    public final static double INTAKE_RIGHT_SERVO_DIRECTION_MULTIPLIER = -1.0;
+    public final static double CLAW_INITIAL_SERVO = 0.0;
     public final static double CLAW_SERVO_MOTION_DELTA = 0.1;
 
 
@@ -73,28 +88,31 @@ public class HardwareBot
         this.hardwareMap = ahwMap;
 
         // Define and Initialize Motors
-        this.lift_drive = this.hardwareMap.get(DcMotor.class, "lift_drive");
-        this.arm_drive = this.hardwareMap.get(DcMotor.class, "arm_drive");
         this.left_front_drive = this.hardwareMap.get(DcMotor.class, "left_front_drive");
         this.right_front_drive = this.hardwareMap.get(DcMotor.class, "right_front_drive");
         this.left_back_drive = this.hardwareMap.get(DcMotor.class, "left_back_drive");
         this.right_back_drive = this.hardwareMap.get(DcMotor.class, "right_back_drive");
+        this.arm_lift_drive = this.hardwareMap.get(DcMotor.class, "arm_lift_drive");
+        this.arm_rotate_drive = this.hardwareMap.get(DcMotor.class, "arm_rotate_drive");
+        this.block_intake_drive = this.hardwareMap.get(DcMotor.class, "block_intake_drive");
 
         // TODO We do not yet know what the directions should be...
         this.left_front_drive.setDirection(DcMotor.Direction.REVERSE);
         this.right_front_drive.setDirection(DcMotor.Direction.FORWARD);
         this.left_back_drive.setDirection(DcMotor.Direction.REVERSE);
         this.right_back_drive.setDirection(DcMotor.Direction.FORWARD);
-        this.lift_drive.setDirection(DcMotor.Direction.FORWARD);
-        this.arm_drive.setDirection(DcMotor.Direction.FORWARD);
+        this.arm_lift_drive.setDirection(DcMotor.Direction.FORWARD);
+        this.arm_rotate_drive.setDirection(DcMotor.Direction.FORWARD);
+        this.block_intake_drive.setDirection(DcMotor.Direction.FORWARD);
 
         // Set all motors to zero power
         this.left_front_drive.setPower(0);
         this.right_front_drive.setPower(0);
         this.left_back_drive.setPower(0);
         this.right_back_drive.setPower(0);
-        this.lift_drive.setPower(0);
-        this.arm_drive.setPower(0);
+        this.arm_lift_drive.setPower(0);
+        this.arm_rotate_drive.setPower(0);
+        this.block_intake_drive.setPower(0);
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
@@ -102,17 +120,23 @@ public class HardwareBot
         this.right_front_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         this.left_back_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         this.right_back_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        this.lift_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        this.arm_rotate_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        this.block_intake_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        this.arm_drive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        this.arm_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        this.arm_lift_drive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        this.arm_lift_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         // Define and initialize ALL installed servos.
-        this.arm_servo  = hardwareMap.get(Servo.class, "arm_servo");
-        this.arm_servo.setPosition(MID_SERVO);
+        this.intake_left_servo  = hardwareMap.get(Servo.class, "instake_left_servo");
+        this.intake_right_servo  = hardwareMap.get(Servo.class, "instake_right_servo");
+        this.intake_left_servo.setPosition(INTAKE_INITIAL_SERVO);
+        this.intake_right_servo.setPosition(INTAKE_INITIAL_SERVO);
 
-        this.arm_being_controlled = false;
         this.claw_servo  = hardwareMap.get(Servo.class, "claw_servo");
+        this.claw_servo.setPosition(CLAW_INITIAL_SERVO);
+
+        // Unclear if this is used
+        this.arm_being_controlled = false;
     }
 
     public void mecanumDrive(double x, double y, double rotation) {
@@ -139,6 +163,9 @@ public class HardwareBot
         this.right_back_drive.setPower(wheelSpeeds[3] * this.MECHANUM_DRIVE_SPEED);
     }
 
+    /** Commenting this temporarily so that we can have zero errors.  We will need to add this back into it
+     * when the robot is working...
+     *
     public void mechanismControl(double lift_request, double arm_request, int arm_motion, double claw_motion) {
         // arm_motion is an int that can be value -1 or 0 or 1
         //  0 means not moving the arm in or out
@@ -206,7 +233,7 @@ public class HardwareBot
             this.arm_drive.setPower(arm_request * this.ARM_DRIVE_MOTOR_SPEED);
             this.arm_being_controlled = true;
         }
-    }
+    }*/
 
     private void normalize_mecanum(double[] wheelSpeeds) {
         double maxMagnitude = Math.abs(wheelSpeeds[0]);
