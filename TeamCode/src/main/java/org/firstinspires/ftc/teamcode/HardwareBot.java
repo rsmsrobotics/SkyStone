@@ -170,7 +170,15 @@ public class HardwareBot
      */
     public void intakeControl(int direction)
     {
+        double intakePositionL, intakePositionR;
 
+        intakePositionL = this.intake_left_servo.getPosition();
+        intakePositionR = this.intake_right_servo.getPosition();
+
+        this.intake_left_servo.setPosition(intakePositionL +
+                this.INTAKE_LEFT_SERVO_DIRECTION_MULTIPLIER*direction);
+        this.intake_right_servo.setPosition(intakePositionR +
+                this.INTAKE_RIGHT_SERVO_DIRECTION_MULTIPLIER*direction);
     }
 
     /** Mechanism Control:  armControl
