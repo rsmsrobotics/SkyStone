@@ -166,6 +166,10 @@ public class HardwareBot
     /** Mechanism Control:  intakeControl
      * This is for the intake control in the front of the robot.
      *
+     * This relies on the class globals for the INTAKE LEFT and RIGHT.  They need to be opposites
+     * (one is negative and one is positive) but they can have different magnitudes, which will
+     * directly relate to speed.
+     *
      * @param direction -- negative for in and positive for out, based on rear triggers
      */
     public void intakeControl(int direction)
