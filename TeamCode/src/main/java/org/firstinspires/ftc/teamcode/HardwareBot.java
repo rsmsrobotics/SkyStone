@@ -188,6 +188,8 @@ public class HardwareBot
     /** Mechanism Control:  armControl
      * This is for the arm and the lift control.
      *
+     * @todo this function still needs work.
+     *
      * @param rotateRequest
      * @param liftRequest
      * @param clawMotion negative to close claw, positive to open claw, zero for nothing
