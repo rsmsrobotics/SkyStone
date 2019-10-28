@@ -53,7 +53,7 @@ public class FightingGnomes_StraightAhead extends LinearOpMode {
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Ready to run");    //
         telemetry.update();
-        this.robot.mechanismControl(0,0,0,-0.5);
+       // this.robot.mechanismControl(0,0,0,-0.5);
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
@@ -94,7 +94,7 @@ public class FightingGnomes_StraightAhead extends LinearOpMode {
         robot.right_front_drive.setPower(0); */
 
         // Step 4:  fix lift location
-        this.robot.mechanismControl(0.0, -0.0, 0,-0.5  );
+       // this.robot.mechanismControl(0.0, -0.0, 0,-0.5  );
 
         runtime.reset();
         while (opModeIsActive() && (runtime.seconds() < 1.0)) {
