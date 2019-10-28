@@ -60,7 +60,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
             // Step through each leg of the path, ensuring that the Auto mode has not been stopped along the way
 
             // Step 1:  lower robot for 3 seconds
-            this.robot.mechanismControl(1.0, -0.0, 0, 0 );
+           // this.robot.mechanismControl(1.0, -0.0, 0, 0 );
 
             runtime.reset();
             while (opModeIsActive() && (runtime.seconds() < 3.0)) {
@@ -68,7 +68,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
                 telemetry.update();
             }
 
-            this.robot.mechanismControl(0,0,0, 0);
+           // this.robot.mechanismControl(0,0,0, 0);
 
             // Step 2:  Drive Backwards for .5 seconds
             this.robot.mecanumDrive(0, BACKWARD_SPEED, 0);
@@ -93,7 +93,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
             robot.right_front_drive.setPower(0);
 
             // Step 4:  fix lift location
-            this.robot.mechanismControl(-1.0, -0.0, 0,0  );
+            //this.robot.mechanismControl(-1.0, -0.0, 0,0  );
 
             runtime.reset();
             while (opModeIsActive() && (runtime.seconds() < 1.0)) {
