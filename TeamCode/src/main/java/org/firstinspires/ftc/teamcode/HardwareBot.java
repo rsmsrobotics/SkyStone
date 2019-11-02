@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import static java.lang.StrictMath.abs;
+
 /**
  * This is NOT an opmode.
  *
@@ -201,7 +203,7 @@ public class HardwareBot
 
         /* operate the claw itself */
         if (clawMotion != 0) {
-            clawPosition = this.claw_servo.getPosition();
+            double clawPosition = this.claw_servo.getPosition();
             double newClawPosition;
 
             newClawPosition = clawPosition +
@@ -217,6 +219,12 @@ public class HardwareBot
             }
 
             this.claw_servo.setPosition(newClawPosition);
+        }
+
+        /* operate the rotation */
+        /* first we check if the request is anywhere near 0; if so, do nothing. */
+        if (abs(rotateRequest) > 0.00000001) {
+            // @todo
         }
 
     }
