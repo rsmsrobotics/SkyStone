@@ -67,7 +67,9 @@ public class HardwareBot
     public static final double INTAKE_INITIAL_SERVO = 0.0;
     public final static double INTAKE_LEFT_SERVO_DIRECTION_MULTIPLIER = 1.0;
     public final static double INTAKE_RIGHT_SERVO_DIRECTION_MULTIPLIER = -1.0;
-    public final static double CLAW_INITIAL_SERVO = 0.0;
+    public final static double CLAW_INITIAL_SERVO = 0.0
+    public final static double CLAW_MIN_SERVO = -0.5;
+    public final static double CLAW_MAX_SERVO = 0.5;
     public final static double CLAW_SERVO_MOTION_DELTA = 0.1;
 
 
@@ -196,6 +198,26 @@ public class HardwareBot
      */
     public void armControl(double rotateRequest, double liftRequest, int clawMotion)
     {
+
+        /* operate the claw itself */
+        if (clawMotion != 0) {
+            clawPosition = this.claw_servo.getPosition();
+            double newClawPosition;
+
+            newClawPosition = clawPosition +
+                    this.CLAW_SERVO_MOTION_DELTA * clawMotion);
+
+            /* This code "clamps" the claw servo position to the allowable space. */
+            if (newClawPosition < this.CLAW_MIN_SERVO) {
+                newClawPosition = this.CLAW_MIN_SERVO;
+            }
+
+            if (newClawPosition > this.CLAW_MAX_SERVO) {
+                newClawPosition = this.CLAW_MAX_SERVO;
+            }
+
+            this.claw_servo.setPosition(newClawPosition);
+        }
 
     }
 
