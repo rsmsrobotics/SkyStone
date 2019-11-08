@@ -37,7 +37,7 @@ public class HardwareBot
     public DcMotor left_back_drive = null;
     public DcMotor right_front_drive = null;
     public DcMotor right_back_drive = null;
-    public DcMotor block_intake_drive = null;
+   // public DcMotor block_intake_drive = null;
     public DcMotor arm_rotate_drive = null;
     public DcMotor arm_lift_drive = null;
     public Servo intake_left_servo = null;
@@ -66,10 +66,10 @@ public class HardwareBot
     /** The servos for the intake will be facing each other and for the same direction of intake,
      * they need to spin in a different direction.
      */
-    public static final double INTAKE_INITIAL_SERVO = 0.0;
+    public static final double INTAKE_INITIAL_SERVO = 0.5;
     public final static double INTAKE_LEFT_SERVO_DIRECTION_MULTIPLIER = 1.0;
     public final static double INTAKE_RIGHT_SERVO_DIRECTION_MULTIPLIER = -1.0;
-    public final static double CLAW_INITIAL_SERVO = 0.0
+    public final static double CLAW_INITIAL_SERVO = 0.0;
     public final static double CLAW_MIN_SERVO = -0.5;
     public final static double CLAW_MAX_SERVO = 0.5;
     public final static double CLAW_SERVO_MOTION_DELTA = 0.1;
@@ -98,7 +98,7 @@ public class HardwareBot
         this.right_back_drive = this.hardwareMap.get(DcMotor.class, "right_back_drive");
         this.arm_lift_drive = this.hardwareMap.get(DcMotor.class, "arm_lift_drive");
         this.arm_rotate_drive = this.hardwareMap.get(DcMotor.class, "arm_rotate_drive");
-        this.block_intake_drive = this.hardwareMap.get(DcMotor.class, "block_intake_drive");
+        //this.block_intake_drive = this.hardwareMap.get(DcMotor.class, "block_intake_drive");
 
         // TODO We do not yet know what the directions should be...
         this.left_front_drive.setDirection(DcMotor.Direction.REVERSE);
@@ -107,7 +107,7 @@ public class HardwareBot
         this.right_back_drive.setDirection(DcMotor.Direction.FORWARD);
         this.arm_lift_drive.setDirection(DcMotor.Direction.FORWARD);
         this.arm_rotate_drive.setDirection(DcMotor.Direction.FORWARD);
-        this.block_intake_drive.setDirection(DcMotor.Direction.FORWARD);
+        //this.block_intake_drive.setDirection(DcMotor.Direction.FORWARD);
 
         // Set all motors to zero power
         this.left_front_drive.setPower(0);
@@ -116,7 +116,7 @@ public class HardwareBot
         this.right_back_drive.setPower(0);
         this.arm_lift_drive.setPower(0);
         this.arm_rotate_drive.setPower(0);
-        this.block_intake_drive.setPower(0);
+        //this.block_intake_drive.setPower(0);
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
@@ -125,14 +125,14 @@ public class HardwareBot
         this.left_back_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         this.right_back_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         this.arm_rotate_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        this.block_intake_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //this.block_intake_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         this.arm_lift_drive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         this.arm_lift_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         // Define and initialize ALL installed servos.
-        this.intake_left_servo  = hardwareMap.get(Servo.class, "instake_left_servo");
-        this.intake_right_servo  = hardwareMap.get(Servo.class, "instake_right_servo");
+        this.intake_left_servo  = hardwareMap.get(Servo.class, "intake_left_servo");
+        this.intake_right_servo  = hardwareMap.get(Servo.class, "intake_right_servo");
         this.intake_left_servo.setPosition(INTAKE_INITIAL_SERVO);
         this.intake_right_servo.setPosition(INTAKE_INITIAL_SERVO);
 
@@ -178,15 +178,18 @@ public class HardwareBot
      */
     public void intakeControl(int direction)
     {
-        double intakePositionL, intakePositionR;
+        if (direction != 0 )
+        {
+            double intakePositionL, intakePositionR;
 
-        intakePositionL = this.intake_left_servo.getPosition();
-        intakePositionR = this.intake_right_servo.getPosition();
+            intakePositionL = this.intake_left_servo.getPosition();
+            intakePositionR = this.intake_right_servo.getPosition();
 
-        this.intake_left_servo.setPosition(intakePositionL +
-                this.INTAKE_LEFT_SERVO_DIRECTION_MULTIPLIER*direction);
-        this.intake_right_servo.setPosition(intakePositionR +
-                this.INTAKE_RIGHT_SERVO_DIRECTION_MULTIPLIER*direction);
+            this.intake_left_servo.setPosition(intakePositionL +
+                    this.INTAKE_LEFT_SERVO_DIRECTION_MULTIPLIER * direction);
+            this.intake_right_servo.setPosition(intakePositionR +
+                    this.INTAKE_RIGHT_SERVO_DIRECTION_MULTIPLIER * direction);
+        }
     }
 
     /** Mechanism Control:  armControl
@@ -207,7 +210,7 @@ public class HardwareBot
             double newClawPosition;
 
             newClawPosition = clawPosition +
-                    this.CLAW_SERVO_MOTION_DELTA * clawMotion);
+                    this.CLAW_SERVO_MOTION_DELTA * clawMotion;
 
             /* This code "clamps" the claw servo position to the allowable space. */
             if (newClawPosition < this.CLAW_MIN_SERVO) {
