@@ -50,7 +50,7 @@ public class HardwareBot
     public static final double DOWN_SPEED = 0.5;
 
     public static final double MECHANUM_DRIVE_SPEED = 0.5;
-    public static final double INTAKE_DRIVE_SPEED = 0.33;
+    public static final double INTAKE_DRIVE_SPEED = 0.33; // not used
     public static final double ARM_ROTATE_SPEED = 0.33;
     public static final double ARM_LIFT_SPEED = 0.33;
 
@@ -202,8 +202,6 @@ public class HardwareBot
     /** Mechanism Control:  armControl
      * This is for the arm and the lift control.
      *
-     * @todo this function still needs work.
-     *
      * @param rotateRequest
      * @param liftRequest
      * @param clawMotion negative to close claw, positive to open claw, zero for nothing
@@ -234,9 +232,12 @@ public class HardwareBot
         /* operate the rotation */
         /* first we check if the request is anywhere near 0; if so, do nothing. */
         if (abs(rotateRequest) > 0.00000001) {
-            // @todo
+            this.arm_rotate_drive.setPower(this.ARM_ROTATE_SPEED * rotateRequest);
         }
 
+        if (abs(liftRequest) > 0.00000001) {
+            this.arm_lift_drive.setPower(this.ARM_LIFT_SPEED * liftRequest);
+        }
     }
 
     /** Commenting this temporarily so that we can have zero errors.  We will need to add this back into it
