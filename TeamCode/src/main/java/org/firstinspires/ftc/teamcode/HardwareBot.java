@@ -65,6 +65,8 @@ public class HardwareBot
     public final static double INTAKE_SERVOS_MOTION_DELTA = 0.1;
     /** The servos for the intake will be facing each other and for the same direction of intake,
      * they need to spin in a different direction.
+     *
+     * Also, For future reference: the servo zero position is 0.5, not 0.0.
      */
     public static final double INTAKE_INITIAL_SERVO = 0.5;
     public final static double INTAKE_LEFT_SERVO_DIRECTION_MULTIPLIER = 1.0;
@@ -178,7 +180,7 @@ public class HardwareBot
      */
     public void intakeControl(int direction)
     {
-        if (direction != 0 )
+        if (direction != 0)
         {
             double intakePositionL, intakePositionR;
 
@@ -189,6 +191,11 @@ public class HardwareBot
                     this.INTAKE_LEFT_SERVO_DIRECTION_MULTIPLIER * direction);
             this.intake_right_servo.setPosition(intakePositionR +
                     this.INTAKE_RIGHT_SERVO_DIRECTION_MULTIPLIER * direction);
+        }
+        else
+        {
+            this.intake_left_servo.setPosition(this.INTAKE_INITIAL_SERVO);
+            this.intake_right_servo.setPosition(this.INTAKE_INITIAL_SERVO);
         }
     }
 

@@ -62,17 +62,14 @@ public class FightingGnomes_OpMode extends LinearOpMode {
             //
             // start by setting no button pushed
             int intake_direction = 0;
-            this.robot.intakeControl(intake_direction);
             if (this.gamepad2.right_bumper) {
                 intake_direction = -1; // IN
-                this.robot.intakeControl(intake_direction);
-
             }
             else if (this.gamepad2.left_bumper) {
                 intake_direction = 1; // OUT
-                this.robot.intakeControl(intake_direction);
-
             }
+            this.robot.intakeControl(intake_direction);
+
 
             // The next block of code is for the Operator controller for the arm
             // The operator uses gamepad2
