@@ -63,7 +63,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
            // this.robot.mechanismControl(1.0, -0.0, 0, 0 );
 
             runtime.reset();
-            while (opModeIsActive() && (runtime.seconds() < 3.0)) {
+            while (opModeIsActive() && (runtime.seconds() < 14.0)) {
                 telemetry.addData("Path", "Leg 1: %2.5f S Elapsed", runtime.seconds());
                 telemetry.update();
             }
@@ -82,7 +82,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
             // Step 3:  Drive Right for 3 Seconds
             this.robot.mecanumDrive(EXIT_SPEED, 0, ROTATE_SPEED);
             runtime.reset();
-            while (opModeIsActive() && (runtime.seconds() < 5.0)) {
+            while (opModeIsActive() && (runtime.seconds() < 3.0)) {
                 telemetry.addData("Path", "Leg 3: %2.5f S Elapsed", runtime.seconds());
                 telemetry.update();
             }
@@ -102,7 +102,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
             }
 
             // Step 3:  try to hit a ball!
-            this.robot.mecanumDrive(EXIT_SPEED, 0, 0.5);
+            //2019 this.robot.mecanumDrive(EXIT_SPEED, 0, 0.5);
             runtime.reset();
             while (opModeIsActive() && (runtime.seconds() < 3.0)) {
                 telemetry.addData("Path", "Leg 3: %2.5f S Elapsed", runtime.seconds());
