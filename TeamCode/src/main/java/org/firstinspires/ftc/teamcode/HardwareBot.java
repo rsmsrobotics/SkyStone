@@ -72,8 +72,8 @@ public class HardwareBot
     public final static double INTAKE_LEFT_SERVO_DIRECTION_MULTIPLIER = 1.0;
     public final static double INTAKE_RIGHT_SERVO_DIRECTION_MULTIPLIER = -1.0;
     public final static double CLAW_INITIAL_SERVO = 0.0;
-    public final static double CLAW_MIN_SERVO = -0.5;
-    public final static double CLAW_MAX_SERVO = 0.5;
+    public final static double CLAW_MIN_SERVO = 0.25;  //was .5
+    public final static double CLAW_MAX_SERVO = 0.5;  // in current wiring, this is close // was .5
     public final static double CLAW_SERVO_MOTION_DELTA = 0.1;
 
 
@@ -148,18 +148,20 @@ public class HardwareBot
     public void mecanumDrive(double x, double y, double rotation) {
         double wheelSpeeds[] =new double[4];
 
-        /*  This is the original code for the mechanum drive.
-        wheelSpeeds[0] = x + y + rotation;
-        wheelSpeeds[1] = -x + y - rotation;
-        wheelSpeeds[2] = -x + y + rotation;
-        wheelSpeeds[3] = x + y - rotation;
-        */
+        /*  This is the original code for the mechanum drive. */
+        wheelSpeeds[0] = x + y + rotation; //LF
+        wheelSpeeds[1] = -x + y - rotation; //RF
+        wheelSpeeds[2] = -x + y + rotation; //LB
+        wheelSpeeds[3] = x + y - rotation;  //RB
+        //
 
         // tweaking the relative changes so that we can control it better.
+        /*
         wheelSpeeds[0] = -x + y - rotation;
         wheelSpeeds[1] = x + y + rotation;
         wheelSpeeds[2] = x + y - rotation;
         wheelSpeeds[3] = -x + y + rotation;
+        // */
 
         this.normalize_mecanum(wheelSpeeds);
 
@@ -231,12 +233,20 @@ public class HardwareBot
 
         /* operate the rotation */
         /* first we check if the request is anywhere near 0; if so, do nothing. */
-        if (abs(rotateRequest) > 0.00000001) {
+        if (abs(rotateRequest) > 0.05) {
             this.arm_rotate_drive.setPower(this.ARM_ROTATE_SPEED * rotateRequest);
         }
+        else
+        {
+            this.arm_rotate_drive.setPower(0.0);
+        }
 
-        if (abs(liftRequest) > 0.00000001) {
+        if (abs(liftRequest) > 0.05) {
             this.arm_lift_drive.setPower(this.ARM_LIFT_SPEED * liftRequest);
+        }
+        else
+        {
+            this.arm_lift_drive.setPower(0.0);
         }
     }
 
@@ -332,7 +342,7 @@ public class HardwareBot
             }
         }
     }
-
+/*  We are not using simpleDrive.
     public void simpleDrive(double x, double y, double rotation) {
         //Setup drive variables for each drive wheel
         double drivePower;
@@ -356,7 +366,7 @@ public class HardwareBot
         // Send calculated power to wheels
         this.left_front_drive.setPower(drivePower);
         this.right_front_drive.setPower(turnPower);
-    }
+    } */
 
     public void testDrive(double lfd, double lrd, double rfd, double rrd) {
         this.left_front_drive.setPower(lfd * this.MECHANUM_DRIVE_SPEED);
