@@ -63,7 +63,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
            // this.robot.mechanismControl(1.0, -0.0, 0, 0 );
 
             runtime.reset();
-            while (opModeIsActive() && (runtime.seconds() < 14.0)) {
+            while (opModeIsActive() && (runtime.seconds() < 25.0)) {
                 telemetry.addData("Path", "Leg 1: %2.5f S Elapsed", runtime.seconds());
                 telemetry.update();
             }

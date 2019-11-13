@@ -55,7 +55,8 @@ public class FightingGnomes_OpMode extends LinearOpMode {
             //this.simpleDrive(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
             // Otherwise use the MecanumDrive
             // This code uses the MecanumDrive method for controlling the robot
-            this.robot.mecanumDrive(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
+            // Use 0.5 to scale the joystick, make it easier to control.
+            this.robot.mecanumDrive(gamepad1.left_stick_x * 0.5, gamepad1.left_stick_y * 0.5, gamepad1.right_stick_x * 0.5);
 
             // Operator Controller
             //  INTAKE
@@ -81,7 +82,8 @@ public class FightingGnomes_OpMode extends LinearOpMode {
             double arm_lift_amount;
             arm_lift_amount = this.gamepad2.right_stick_y;
             double arm_rotate_amount;
-            arm_rotate_amount = this.gamepad2.left_stick_x;
+            arm_rotate_amount = this.gamepad2.left_stick_x * 0.4;
+            // slows arm rotate down
 
             int claw_motion = 0;
             if (this.gamepad2.a) {
