@@ -148,20 +148,23 @@ public class HardwareBot
     public void mecanumDrive(double x, double y, double rotation) {
         double wheelSpeeds[] =new double[4];
 
-        /*  This is the original code for the mechanum drive. */
+         /*  This is the original code for the mechanum drive. */
+        /*
         wheelSpeeds[0] = x + y + rotation; //LF
         wheelSpeeds[1] = -x + y - rotation; //RF
         wheelSpeeds[2] = -x + y + rotation; //LB
         wheelSpeeds[3] = x + y - rotation;  //RB
+
+         */
         //
 
         // tweaking the relative changes so that we can control it better.
-        /*
+
         wheelSpeeds[0] = -x + y - rotation;
         wheelSpeeds[1] = x + y + rotation;
         wheelSpeeds[2] = x + y - rotation;
         wheelSpeeds[3] = -x + y + rotation;
-        // */
+        // 
 
         this.normalize_mecanum(wheelSpeeds);
 

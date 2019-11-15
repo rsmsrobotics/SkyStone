@@ -56,7 +56,7 @@ public class FightingGnomes_OpMode extends LinearOpMode {
             // Otherwise use the MecanumDrive
             // This code uses the MecanumDrive method for controlling the robot
             // Use 0.5 to scale the joystick, make it easier to control.
-            this.robot.mecanumDrive(gamepad1.left_stick_x * 0.5, gamepad1.left_stick_y * 0.5, gamepad1.right_stick_x * 0.5);
+            this.robot.mecanumDrive(gamepad1.left_stick_x , gamepad1.left_stick_y , gamepad1.right_stick_x );
 
             // Operator Controller
             //  INTAKE
